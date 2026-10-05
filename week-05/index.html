@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="GLBL 5053 Week 5: call language models directly through an API, compare models from frontier to tiny, and see how a small GPT is built.">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>Week 5 · Calling Models Directly</title>
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+  <nav class="sitebar">
+    <a href="../index.html">← GLBL 5053 Workshops</a>
+    <a href="models.html">Model overview →</a>
+  </nav>
+  <main class="shell">
+    <header class="hero">
+      <p class="kicker">Week 05 · Workshop</p>
+      <h1>Calling models directly.</h1>
+      <p class="lede">Step behind the chat window: send a request to a model yourself, put one prompt to nine models side by side, and then look at how a model like these is built. No coding experience is expected.</p>
+    </header>
+
+    <section class="split" aria-labelledby="api-intro">
+      <div>
+        <p class="eyebrow">What is an API?</p>
+        <h2 id="api-intro">An application programming interface (API) lets one program ask another program to do something.</h2>
+      </div>
+      <div class="copy">
+        <p>When you use a chat app, the app writes a request on your behalf and shows you part of the reply. The request names a model, carries your words, and often carries instructions you never see. The reply includes the answer along with a count of what was used and what it cost.</p>
+        <p>Calling the API means writing that request yourself. It is how every app, agent, and research pipeline that uses a language model talks to it. Once you have seen one request, you have seen the shape of all of them.</p>
+        <p>An <strong>API key</strong> is the pass that says which account pays. Treat it like a password: keep it out of shared documents, screenshots, and GitHub. Yours is a practice key funded by the course with a spending cap, so it cannot touch your bank account, your Yale login, or your computer. If you share it by accident, replace it and tell us.</p>
+      </div>
+    </section>
+
+    <div class="section-heading">
+      <p class="eyebrow">One request, taken apart</p>
+      <h2>What goes out, and what comes back</h2>
+    </div>
+    <section class="wire" aria-label="Anatomy of an API request and response">
+      <figure>
+        <figcaption>You send</figcaption>
+<pre><span class="c"># 1. destination</span>
+POST https://openrouter.ai/api/v1/chat/completions
+
+<span class="c"># 2. authorization: your key, in a header</span>
+Authorization: Bearer sk-or-…
+
+{
+  <span class="c"># 3. which model should answer</span>
+  <span class="n">"model"</span>: "openai/gpt-6-luna",
+
+  <span class="c"># 4. the conversation so far</span>
+  <span class="n">"messages"</span>: [
+    {"role": "system",
+     "content": "Be concrete and concise."},
+    {"role": "user",
+     "content": "What is a language model?"}
+  ]
+}</pre>
+      </figure>
+      <figure>
+        <figcaption>You get back</figcaption>
+<pre>{
+  <span class="c"># which model actually answered</span>
+  <span class="n">"model"</span>: "openai/gpt-6-luna",
+
+  <span class="c"># the answer</span>
+  <span class="n">"choices"</span>: [{
+    "message": {
+      "role": "assistant",
+      "content": "A language model is …"
+    }
+  }],
+
+  <span class="c"># the receipt</span>
+  <span class="n">"usage"</span>: {
+    "prompt_tokens": 21,
+    "completion_tokens": 48,
+    "cost": 0.000026
+  }
+}</pre>
+      </figure>
+    </section>
+    <p class="caption">Simplified for reading; the token counts and cost are illustrative. The notebook prints a real request and its full response.</p>
+
+    <section class="split" aria-labelledby="three-things">
+      <div>
+        <p class="eyebrow">Why bother</p>
+        <h2 id="three-things">Three things the chat window does not show you.</h2>
+      </div>
+      <div class="copy">
+        <ol>
+          <li><strong>The model is a line of text you can change.</strong> Swap one ID and the same question goes to a different company's model. Through one broker, OpenRouter, the course key reaches several hundred of them.</li>
+          <li><strong>Every answer has a price.</strong> You are billed per token in and per token out. Between the models we use today, the price of output differs by a factor in the hundreds.</li>
+          <li><strong>There is no memory in the model.</strong> A conversation is a list of messages that is sent again in full on every turn. What an app calls “memory” or “context” is something the app adds to that list.</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="section-heading">
+      <p class="eyebrow">Part 1</p>
+      <h2>Call models from a notebook</h2>
+    </div>
+    <section class="cards" aria-label="API workshop materials">
+      <a class="card featured" href="https://colab.research.google.com/github/glbl5053/labs/blob/main/week-05/openrouter-model-range.ipynb" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Start here · about 60 minutes</span>
+        <h3>One prompt, many models</h3>
+        <p>Store your key safely, take one request apart, then send the same prompt up and down a ladder of nine models, from frontier models down to ones small enough for a phone. Score them on questions with a right answer, rank their writing blind, and work out what each would cost at scale.</p>
+        <span class="go">Open a runnable copy in Colab →</span>
+      </a>
+      <a class="card warm" href="https://fund.som.chat/account/tokens" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Get your course key</span>
+        <h3>Yale SOM Token Fund</h3>
+        <p>Sign in and copy the OpenRouter key beginning with <code>sk-or-</code>. The separate token beginning with <code>ytf</code> is for the portal itself and cannot call a model. The portal is new; tell us if anything is confusing.</p>
+        <span class="go">Open fund.som.chat/account/tokens →</span>
+      </a>
+      <a class="card tint" href="models.html">
+        <span class="tag">Read alongside</span>
+        <h3>A map of the model list</h3>
+        <p>The catalog has several hundred entries. This page explains how to read a model ID, the five facts worth checking, and the rough tiers the notebook samples from.</p>
+        <span class="go">Open the model overview →</span>
+      </a>
+    </section>
+    <p class="caption" style="margin-top:14px">Prefer Jupyter or VS Code? <a href="openrouter-model-range.ipynb" download>Download the notebook</a> and set <code>OPENROUTER_API_KEY</code> as an environment variable instead of writing the key into the file.</p>
+
+    <div class="section-heading">
+      <p class="eyebrow">Part 2</p>
+      <h2>See one built: Karpathy's GPT</h2>
+      <p>The models in Part 1 are too large to look inside. Andrej Karpathy builds a small one on camera, starting from an empty notebook: about 10 million parameters, trained on the works of Shakespeare, writing one character at a time. It is the same basic design, at a size one person can explain in an afternoon.</p>
+    </div>
+    <section class="cards" aria-label="Karpathy GPT materials">
+      <a class="card featured" href="https://www.youtube.com/watch?v=kCc8FmEb1nY" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Start here · the video · just under two hours</span>
+        <h3>Let's build GPT: from scratch, in code, spelled out</h3>
+        <p>He begins where last week ended, with a model that guesses the next character from the one before it, and adds attention one idea at a time until the output starts to resemble Shakespeare. You do not need to follow the code. Watch what the generated text looks like at each stage, and listen for what he says each new piece is <em>for</em>.</p>
+        <span class="go">Watch on YouTube →</span>
+      </a>
+      <a class="card tint" href="https://colab.research.google.com/drive/1JMLa53HDuA-i7ZBmqV7ZnA3c_fvtXnx-" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Its notebook</span>
+        <h3>The “Let's build GPT” Colab</h3>
+        <p>Karpathy's own notebook from the video. Run the first cells to see text become numbers and a model's first guesses; you can stop well before the end and still have seen the idea.</p>
+        <span class="go">Open in Colab →</span>
+      </a>
+      <a class="card" href="https://github.com/karpathy/ng-video-lecture" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Its code</span>
+        <h3>ng-video-lecture</h3>
+        <p>The finished files. <code>bigram.py</code> is the starting point, close to last week's model. <code>gpt.py</code> is the end point: the whole model and its training in a little over 200 lines.</p>
+        <span class="go">Open the repository →</span>
+      </a>
+      <a class="card cool" href="https://www.youtube.com/watch?v=l8pRSuU81PU" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Going further · about four hours</span>
+        <h3>Let's reproduce GPT-2 (124M)</h3>
+        <p>The sequel, for the curious. GPT-2 is the model OpenAI released in 2019, and its smallest version has 124 million parameters. He loads the published model, has it write, then rebuilds and retrains it to the same quality, working with word-piece tokens and real web text.</p>
+        <span class="go">Watch on YouTube →</span>
+      </a>
+      <a class="card" href="https://github.com/karpathy/build-nanogpt" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Its code and notebook</span>
+        <h3>build-nanogpt</h3>
+        <p>The sequel's repository, saved step by step. <code>play.ipynb</code> is the notebook where he explores the original GPT-2. His estimate for retraining it: about an hour and about $10 of rented GPUs.</p>
+        <span class="go">Open the repository →</span>
+      </a>
+    </section>
+
+    <div class="section-heading">
+      <p class="eyebrow">What happened next</p>
+      <h2>The numbers keep going down</h2>
+      <p>Karpathy's small training setups became public test beds for how quickly a model can be trained. Two things have happened on them since, and both matter more for policy than the models themselves.</p>
+    </div>
+    <section class="cards" aria-label="Speedrun and autoresearch">
+      <a class="card warm featured" href="https://github.com/KellerJordan/modded-nanogpt" target="_blank" rel="noopener noreferrer">
+        <span class="tag">1 · People made it faster · the speedrun</span>
+        <h3>From 45 minutes to under 40 seconds</h3>
+        <p>In May 2024, Karpathy's GPT-2 training code reached a set quality target in 45 minutes on eight H100 GPUs. Keller Jordan turned that into an open competition: same hardware, same target, fastest code wins. By the 92nd record, on August 30, 2026, the time was 0.665 minutes, and the amount of training text needed had fallen from 10 billion tokens to under 330 million. Nobody bought a faster computer. The gains came from dozens of contributors changing the model's design, the training method, and the code.</p>
+        <span class="go">See the record table →</span>
+      </a>
+    </section>
+    <figure class="figure">
+      <a href="https://github.com/karpathy/autoresearch" target="_blank" rel="noopener noreferrer">
+        <img src="https://raw.githubusercontent.com/karpathy/autoresearch/master/progress.png" width="2382" height="1180" loading="lazy" alt="Step chart titled Autoresearch Progress: 83 Experiments, 15 Kept Improvements. The best validation score falls from about 0.998 to about 0.977 as an AI agent tries changes; grey dots mark discarded experiments.">
+      </a>
+      <figcaption>
+        <span class="tag">2 · Then an AI agent ran the experiments · autoresearch</span>
+        <p>In March 2026 Karpathy published a small setup in which an AI coding agent does the research loop itself: change the training code, train for five minutes, keep the change if the score improved, discard it if not, repeat overnight. This is the graph he posted. Each green dot is a change the agent kept; each grey dot is one it tried and threw away.</p>
+        <p><strong>Read it critically.</strong> Look at the vertical axis: the whole chart covers a score change of about 2 percent. And read the label on the last kept “improvement.” What would you want to know before calling that one progress?</p>
+        <p>Graph from <a href="https://github.com/karpathy/autoresearch" target="_blank" rel="noopener noreferrer">karpathy/autoresearch</a>, shown from its original location. See also <a href="https://x.com/karpathy/status/2029701092347630069" target="_blank" rel="noopener noreferrer">his post introducing it</a> and the <a href="https://x.com/karpathy/status/2031135152349524125" target="_blank" rel="noopener noreferrer">follow-up</a>.</p>
+      </figcaption>
+    </figure>
+    <p class="caption">Each of these measures one score on a fixed test set for a small model, and recent speedrun records include techniques tuned to that benchmark. Read them as evidence of how fast methods improve and of who, or what, is now doing the improving. They are not a forecast for large models.</p>
+
+    <section class="split" aria-labelledby="why-5053">
+      <div>
+        <p class="eyebrow">Why this is in a policy course</p>
+        <h2 id="why-5053">You will not build a model. You will have to judge claims about them.</h2>
+      </div>
+      <div class="copy">
+        <p><strong>It gives you a mental model that fits in your head.</strong> The first objective of this course is a working picture of how these systems produce their output. The small GPT in the video does the same basic thing as the models you called in Part 1: predict the next token, given the ones before. Last week's tiny network was too simple to be convincing and today's largest are too big to inspect. This one sits between them.</p>
+        <p><strong>It gives the vocabulary something to refer to.</strong> Parameters, tokens, training data, context window, compute: these words appear in model cards, vendor pitches, export rules, and draft legislation. After watching someone set each of them by hand, you can tell when a document uses one precisely and when it is waving at it.</p>
+        <p><strong>Cost and access are policy variables.</strong> A training result that took 45 minutes in 2024 takes under one minute on the same machines two years later, and the price ladder in Part 1 spans a factor of several hundred today. Rules written around who can afford to train or run a model age at that speed. So do arguments that assume only a few actors ever can.</p>
+        <p><strong>Agents are built from this.</strong> In the coming weeks you will direct AI agents. An agent is a program that makes the API call from Part 1 in a loop, reading each reply to decide the next request. The autoresearch graph above is what one of those loops produced overnight. Knowing the single call makes the loop much less mysterious.</p>
+        <p><strong>It calibrates your trust.</strong> Seeing a tiny model and a frontier model answer the same question, and seeing where each goes wrong, is better preparation for deciding what to delegate than any general advice about “AI.”</p>
+      </div>
+    </section>
+
+    <aside class="notice">
+      <strong>How to watch as a non-programmer.</strong>
+      Skip the syntax. For each section, try to finish the sentence “this part exists so that the model can …”. Note every number he chooses by hand, such as how many layers, how much text, how long to train. Those choices, scaled up, are what separate the rungs of the ladder in Part 1.
+    </aside>
+
+    <footer>
+      <span>GLBL 5053 · Fall 2026 · CC BY 4.0</span>
+      <span>Drafted by Claude (Anthropic) and Codex (OpenAI), based on the direction of Xiuye Chen. API introduction adapted from CPSC 1710 Lab 4.</span>
+    </footer>
+  </main>
+</body>
+</html>

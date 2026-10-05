@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A short guide to reading the OpenRouter model catalog: model IDs, the five facts worth checking, price tiers, and who makes what.">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>A Map of the Model List</title>
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+  <nav class="sitebar">
+    <a href="index.html">← Week 5</a>
+    <a href="https://openrouter.ai/models" target="_blank" rel="noopener noreferrer">Live catalog ↗</a>
+  </nav>
+  <main class="shell">
+    <header class="hero">
+      <p class="kicker">Week 05 · Model overview</p>
+      <h1>A map of the model list.</h1>
+      <p class="lede">On October 5, 2026, OpenRouter listed 465 models from 57 organizations. You do not need to know them. You need to be able to read one entry, and to know roughly where it sits among the rest.</p>
+    </header>
+
+    <aside class="notice">
+      <strong>This page will go out of date.</strong>
+      Every price and model name below was read from OpenRouter's public catalog on October 5, 2026. Names change monthly. The way to read them changes slowly, and that is what this page is for. The <a href="index.html">Week 5 notebook</a> reads live prices each time it runs.
+    </aside>
+
+    <section class="split" aria-labelledby="what-is-or">
+      <div>
+        <p class="eyebrow">First, what the list is</p>
+        <h2 id="what-is-or">OpenRouter is a broker. It makes none of these models.</h2>
+      </div>
+      <div class="copy">
+        <p>Anthropic, Google, OpenAI, Alibaba, Mistral and the rest each run their own models behind their own APIs, with their own accounts and billing. OpenRouter sits in front of them: one key, one request format, one bill. You name a model, and it forwards your request to a company that hosts it.</p>
+        <p>That is why one course key can reach all of them, and why the list is so long. It is close to a census of what is commercially available, which makes it a useful thing to learn to read even if you never use OpenRouter again.</p>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="reading-id">
+      <div>
+        <p class="eyebrow">Reading one entry</p>
+        <h2 id="reading-id">A model ID is an address: who made it, then which one.</h2>
+      </div>
+      <div class="copy">
+        <p>Take <code>anthropic/claude-sonnet-5.5</code>. Before the slash is the organization. After it is the product family (<em>Claude</em>), the size class within that family (<em>Sonnet</em>), and a version number, where higher means newer.</p>
+        <ul>
+          <li><strong>Size words.</strong> Each lab has its own, but they read the same way. In the catalog today, Anthropic prices Fable above Opus above Sonnet above Haiku. OpenAI's GPT-6 line runs Astra, Sol, Luna. Google's runs Pro, Flash, Flash-Lite. Elsewhere, <em>max</em>, <em>pro</em> and <em>large</em> sit above <em>flash</em>, <em>mini</em>, <em>lite</em> and <em>nano</em>.</li>
+          <li><strong>A number followed by <code>b</code></strong> is the model's size in billions of parameters: <code>gemma-4-31b-it</code> has about 31 billion, <code>llama-3.2-1b-instruct</code> about one billion. Labs that keep their models private usually do not publish this number.</li>
+          <li><strong>Suffixes after a colon.</strong> <code>:free</code> costs nothing but is rate-limited. <code>:batch</code> is the same model at about half price for jobs that can wait. Neither is needed for this course.</li>
+          <li><strong>A leading tilde</strong>, as in <code>~openai/gpt-luna-latest</code>, is an alias that follows the newest version in a family.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="five-facts">
+      <div>
+        <p class="eyebrow">What to check</p>
+        <h2 id="five-facts">Five facts tell you most of what you need.</h2>
+      </div>
+      <div class="copy">
+        <ol>
+          <li><strong>What goes in and what comes out.</strong> Most entries take text and return text. Many also accept images or files; some accept audio or video. A few return images or audio. This decides whether a model can do your task at all.</li>
+          <li><strong>Price, twice.</strong> Dollars per million tokens of input, and a higher figure per million tokens of output. A token is about three-quarters of a word. Output prices in the catalog run from $0.03 to $600 per million.</li>
+          <li><strong>Context length.</strong> How many tokens the model can take in at once, counting your documents and the whole conversation. Around a million is now common at the top; small models range from 60,000 to about 260,000.</li>
+          <li><strong>Whether it reasons first.</strong> Many current models write out private working before they answer. It often improves hard answers, it takes longer, and those tokens are billed as output. For 116 of the 465 entries it cannot be switched off.</li>
+          <li><strong>Release date.</strong> A model from 2024 at the same price as one from 2026 is rarely the better buy. Age also bounds what the model can know about the world without being given documents.</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="section-heading">
+      <p class="eyebrow">The map</p>
+      <h2>Five rough tiers, by price</h2>
+      <p>These tiers are a convenience for this course and not an official classification. They sort by what the seller charges. Models marked in the Week 5 notebook's ladder are the ones you will run side by side.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tier</th><th>Model ID</th><th class="num">$ / M in</th><th class="num">$ / M out</th><th class="num">Context</th><th class="num">Index*</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="tier">Frontier</span></td><td><code>anthropic/claude-fable-5.1</code> <span class="sub">in the notebook ladder</span></td><td class="num">$10</td><td class="num">$50</td><td class="num">1M</td><td class="num">53.4</td></tr>
+          <tr><td><span class="tier">Frontier</span></td><td><code>openai/gpt-6-astra</code> <span class="sub">in the notebook ladder</span></td><td class="num">$10</td><td class="num">$50</td><td class="num">1.05M</td><td class="num">52.7</td></tr>
+          <tr><td><span class="tier">Workhorse</span></td><td><code>anthropic/claude-opus-5.5</code></td><td class="num">$4</td><td class="num">$20</td><td class="num">1M</td><td class="num">57.6</td></tr>
+          <tr><td><span class="tier">Workhorse</span></td><td><code>anthropic/claude-sonnet-5.5</code> <span class="sub">in the notebook ladder</span></td><td class="num">$2</td><td class="num">$10</td><td class="num">1M</td><td class="num">56.0</td></tr>
+          <tr><td><span class="tier">Workhorse</span></td><td><code>openai/gpt-6.1-sol</code></td><td class="num">$2</td><td class="num">$10</td><td class="num">1.05M</td><td class="num">51.8</td></tr>
+          <tr><td><span class="tier">Workhorse</span></td><td><code>x-ai/grok-4.7</code></td><td class="num">$2</td><td class="num">$6</td><td class="num">500K</td><td class="num">46.4</td></tr>
+          <tr><td><span class="tier">Workhorse</span></td><td><code>qwen/qwen3.8-max-0902</code></td><td class="num">$2</td><td class="num">$6</td><td class="num">1M</td><td class="num">45.4</td></tr>
+          <tr><td><span class="tier">Workhorse</span></td><td><code>meta/muse-spark-1.3</code></td><td class="num">$1.25</td><td class="num">$4.25</td><td class="num">1M</td><td class="num">48.1</td></tr>
+          <tr><td><span class="tier">Workhorse</span></td><td><code>google/gemini-3.8-flash</code> <span class="sub">in the notebook ladder</span></td><td class="num">$0.75</td><td class="num">$3.75</td><td class="num">1M</td><td class="num">40.9</td></tr>
+          <tr><td><span class="tier">Fast and cheap</span></td><td><code>deepseek/deepseek-v4.1-flash</code> <span class="sub">in the notebook ladder</span></td><td class="num">$0.30</td><td class="num">$1.20</td><td class="num">1M</td><td class="num">39.5</td></tr>
+          <tr><td><span class="tier">Fast and cheap</span></td><td><code>z-ai/glm-5.3-flash</code></td><td class="num">$0.15</td><td class="num">$0.50</td><td class="num">1M</td><td class="num">41.8</td></tr>
+          <tr><td><span class="tier">Fast and cheap</span></td><td><code>openai/gpt-6-luna</code> <span class="sub">in the notebook ladder</span></td><td class="num">$0.10</td><td class="num">$0.50</td><td class="num">1.05M</td><td class="num">38.1</td></tr>
+          <tr><td><span class="tier">Small, open weights</span></td><td><code>google/gemma-4-31b-it</code> <span class="sub">in the notebook ladder</span></td><td class="num">$0.09</td><td class="num">$0.34</td><td class="num">262K</td><td class="num">14.7</td></tr>
+          <tr><td><span class="tier">Small, open weights</span></td><td><code>ibm-granite/granite-4.2-8b</code></td><td class="num">$0.06</td><td class="num">$0.25</td><td class="num">131K</td><td class="num">11.1</td></tr>
+          <tr><td><span class="tier">Tiny</span></td><td><code>mistralai/ministral-3b-2512</code> <span class="sub">in the notebook ladder</span></td><td class="num">$0.10</td><td class="num">$0.10</td><td class="num">131K</td><td class="num">4.8</td></tr>
+          <tr><td><span class="tier">Tiny</span></td><td><code>meta-llama/llama-3.2-3b-instruct</code></td><td class="num">$0.05</td><td class="num">$0.33</td><td class="num">131K</td><td class="num">5.7</td></tr>
+          <tr><td><span class="tier">Tiny</span></td><td><code>meta-llama/llama-3.2-1b-instruct</code> <span class="sub">in the notebook ladder</span></td><td class="num">$0.027</td><td class="num">$0.201</td><td class="num">60K</td><td class="num">4.8</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">Prices in US dollars per million tokens, from the OpenRouter catalog on October 5, 2026. *Index is the Artificial Analysis Intelligence Index as shown in that catalog, a composite of several benchmarks where higher is better.</p>
+
+    <section class="split" aria-labelledby="reading-map">
+      <div>
+        <p class="eyebrow">Reading the map</p>
+        <h2 id="reading-map">Three things worth noticing before you run anything.</h2>
+      </div>
+      <div class="copy">
+        <p><strong>The range is enormous.</strong> From the top row to the bottom, the price of output falls by a factor of about 250, and the model shrinks from a size its maker does not disclose to one billion parameters. For scale, the GPT built in this week's video has about 10 million, and the smallest GPT-2 has 124 million.</p>
+        <p><strong>Price and the benchmark do not line up neatly.</strong> The two most expensive models in the table do not have the highest index; two cheaper Anthropic models score above both. And a $0.50 model scores close to a $3.75 one. A single number compresses many tests into one, sellers set prices for their own reasons, and neither tells you how a model handles <em>your</em> task. That is the reason to compare them yourself.</p>
+        <p><strong>The drop is not smooth.</strong> On this index the first twelve rows fall between 38 and 58; the last five are all below 15. Whether that cliff shows up in your own prompts, and where, is what the notebook's experiments are for.</p>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="who">
+      <div>
+        <p class="eyebrow">Who is on the list</p>
+        <h2 id="who">A handful of labs account for most entries.</h2>
+      </div>
+      <div class="copy">
+        <p>Counting every listed variant, OpenAI has 102 entries, Alibaba's Qwen 54, Google 41, Anthropic 29, Mistral 25, Z.ai 18, and DeepSeek 15. Many of these are older versions kept available.</p>
+        <ul>
+          <li><strong>United States:</strong> OpenAI, Google, Anthropic, xAI (the Grok models, listed as SpaceXAI), Meta, NVIDIA, Amazon, Microsoft, IBM.</li>
+          <li><strong>China:</strong> Alibaba (Qwen), Z.ai (GLM), DeepSeek, Moonshot (Kimi), MiniMax, Tencent, ByteDance, Xiaomi, Baidu.</li>
+          <li><strong>Elsewhere:</strong> Mistral in France, Cohere in Canada, Upstage in South Korea, Sakana in Japan.</li>
+        </ul>
+        <p>The notebook's <code>EXTRAS</code> list includes models from several of these so you can put them side by side on the same prompt.</p>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="open">
+      <div>
+        <p class="eyebrow">A distinction that matters for policy</p>
+        <h2 id="open">Closed models and open-weight models.</h2>
+      </div>
+      <div class="copy">
+        <p>A <strong>closed</strong> model stays on its maker's servers; you can only send it requests. Claude Fable 5.1 is reachable through four endpoints: Anthropic itself and three cloud partners.</p>
+        <p>An <strong>open-weight</strong> model's parameters are published, so anyone with enough hardware can download and run it, modify it, or host it for others. About 180 of the 465 entries link to published weights. DeepSeek V4.1 Flash is offered through 30 endpoints and GLM 5.3 Flash through 33, most of them independent hosting companies.</p>
+        <p>The tiny models at the bottom of the table are all open-weight, and small enough to run on a laptop or phone with no API at all. When you read a proposal to control access to AI models, it is worth asking which of these two kinds it could actually reach.</p>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="not-chat">
+      <div>
+        <p class="eyebrow">Beyond chat</p>
+        <h2 id="not-chat">Not every model returns words.</h2>
+      </div>
+      <div class="copy">
+        <p><strong>Embedding models</strong> turn a text into a list of numbers so that texts can be compared and searched by meaning. OpenRouter lists 33 of them separately; <code>openai/text-embedding-3-small</code> is the one in the notebook's optional section.</p>
+        <p><strong>Image and audio models</strong> return pictures or sound, for example <code>google/gemini-3.1-flash-lite-image</code> and <code>openai/gpt-audio-mini</code>. They use the same request pattern with different content in the messages.</p>
+        <p><strong>Routers</strong> such as <code>openrouter/auto</code> choose a model for you. Convenient in a product; unhelpful when the point is to know which model said what.</p>
+      </div>
+    </section>
+
+    <div class="section-heading">
+      <p class="eyebrow">For everyday experimenting</p>
+      <h2>The cheap shortlist</h2>
+      <p>When you are trying an idea rather than comparing models, these five cover the main kinds of input and output at low cost. Use them by default, and move up the ladder when a task shows it needs more.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Model ID</th><th>Input</th><th>Output</th><th>Use it to</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>deepseek/deepseek-v4.1-flash</code></td><td>text, image</td><td>text</td><td>Answer a prompt cheaply</td></tr>
+          <tr><td><code>openai/gpt-6-luna</code></td><td>text, image, file</td><td>text</td><td>Get a second opinion from another lab</td></tr>
+          <tr><td><code>openai/text-embedding-3-small</code></td><td>text</td><td>vector</td><td>Measure which texts are similar</td></tr>
+          <tr><td><code>google/gemini-3.1-flash-lite-image</code></td><td>text, image</td><td>text, image</td><td>Produce or edit an image</td></tr>
+          <tr><td><code>openai/gpt-audio-mini</code></td><td>text, audio</td><td>text, audio</td><td>Send and receive speech</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">The same shortlist used in CPSC 1710 Lab 4.</p>
+
+    <section class="split" aria-labelledby="choose">
+      <div>
+        <p class="eyebrow">Choosing</p>
+        <h2 id="choose">Three questions, in this order.</h2>
+      </div>
+      <div class="copy">
+        <ol>
+          <li><strong>What goes in and what must come out?</strong> This removes most of the list.</li>
+          <li><strong>How many times will this run?</strong> Once, by hand: price barely matters, so use a strong model. Ten thousand times: price is the decision, so find the cheapest model that passes your own test.</li>
+          <li><strong>What happens if it is wrong?</strong> If a mistake is cheap to catch, start small and move up only when you see failures. If it is costly, start at the top and check the output anyway.</li>
+        </ol>
+        <p>To browse further, the <a href="https://openrouter.ai/models" target="_blank" rel="noopener noreferrer">live catalog</a> can be filtered by input type, price and context length, and the <a href="https://openrouter.ai/rankings" target="_blank" rel="noopener noreferrer">rankings page</a> shows which models people are actually using.</p>
+      </div>
+    </section>
+
+    <footer>
+      <span>GLBL 5053 · Fall 2026 · CC BY 4.0</span>
+      <span>Drafted by Claude (Anthropic), based on the direction of Xiuye Chen.</span>
+    </footer>
+  </main>
+</body>
+</html>
