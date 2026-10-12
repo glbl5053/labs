@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="GLBL 5053 Week 6: build a very small AI agent, watch it work, find the ways it goes wrong, and look for the same parts in a real one.">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>Week 6 · A Tiny Agent</title>
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+  <nav class="sitebar">
+    <a href="../index.html">← GLBL 5053 Workshops</a>
+    <a href="tiny-agent.ipynb" download>Download the notebook →</a>
+  </nav>
+  <main class="shell">
+    <header class="hero">
+      <p class="kicker">Week 06 · Workshop</p>
+      <h1>A tiny agent.</h1>
+      <p class="lede">Build a very small AI agent, watch it work, and find the ways it goes wrong. Then look for the same parts in a real one. No coding experience is expected.</p>
+    </header>
+
+    <section class="split" aria-labelledby="what">
+      <div>
+        <p class="eyebrow">What is an agent?</p>
+        <h2 id="what">A language model that uses tools in a loop to work toward a goal, until it is finished or stopped.</h2>
+      </div>
+      <div class="copy">
+        <p>Last week you sent one request to a model and got one reply. An agent is a program that makes that call again and again. Each time, the model writes what it wants done next. The program does it, adds the result to the list of messages, and calls the model again.</p>
+        <p>The model can only write text. It cannot open a file or send an email. The program around it, often called the <strong>harness</strong>, carries out each request, and decides which requests it will carry out at all.</p>
+        <p>Every agent has four parts: a <strong>model</strong> that chooses the next step, <strong>tools</strong> it can ask for, a <strong>memory</strong> that is the growing list of messages, and <strong>limits</strong> set by people. Today you will see all four in about thirty lines of program.</p>
+      </div>
+    </section>
+
+    <div class="section-heading">
+      <p class="eyebrow">The whole idea on one screen</p>
+      <h2>The loop, and one run of it</h2>
+    </div>
+    <section class="wire" aria-label="The agent loop and a recorded run">
+      <figure>
+        <figcaption>The program, in words</figcaption>
+<pre><span class="c"># the list starts with the instructions</span>
+<span class="c"># and your question</span>
+
+<span class="n">repeat</span>, up to the step limit:
+
+  1. send the whole list to the model;
+     keep the first line it writes
+
+  2. if the line starts with ANSWER,
+     <span class="n">stop</span>
+
+  3. otherwise, run the tool
+     the line names
+
+  4. add the result to the list,
+     and go round again</pre>
+      </figure>
+      <figure>
+        <figcaption>One run, as recorded</figcaption>
+<pre><span class="c"># call 1 · the model wrote</span>
+TOOL: list_files |
+<span class="c"># the program ran it</span>
+brief-instructions.txt
+deadlines.txt
+reading-list.txt
+
+<span class="c"># call 2</span>
+TOOL: read_file | deadlines.txt
+<span class="c"># ... the text of the file</span>
+
+<span class="c"># call 3</span>
+TOOL: days_until | 2026-11-06
+25 days from today
+
+<span class="c"># call 4</span>
+TOOL: read_file | brief-instructions.txt
+<span class="c"># ... the text of the file</span>
+
+<span class="c"># call 5</span>
+<span class="n">ANSWER:</span> Your policy brief first draft
+is due November 6, 2026. You have 25
+days. The word limit is 1,200 words,
+not counting references.</pre>
+      </figure>
+    </section>
+    <p class="caption">Recorded on October 12, 2026 with <code>openai/gpt-6-luna</code>. The files are made up for practice, and file contents are left out here. Your dates will differ.</p>
+
+    <div class="section-heading">
+      <p class="eyebrow">Part A · about 45 minutes</p>
+      <h2>Build the tiny agent</h2>
+      <p>Six steps, one notebook cell each. You run the cells and change the settings marked <code>CHANGE ME</code>: the question, the step limit, the model, a planted note, and a permission.</p>
+    </div>
+    <section class="cards" aria-label="Part A materials">
+      <a class="card featured" href="https://colab.research.google.com/github/glbl5053/labs/blob/main/week-06/tiny-agent.ipynb" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Start here · about 45 minutes</span>
+        <h3>A tiny agent</h3>
+        <p>Ask the model directly and watch it fail. Describe three tools in words. Play the part of the program by hand. Then let the loop run, and try to break it: too few steps, a model too small for the job, a file that gives the agent orders, and an action that needs your permission.</p>
+        <span class="go">Open a runnable copy in Colab →</span>
+      </a>
+      <a class="card warm" href="https://fund.som.chat/account/tokens" target="_blank" rel="noopener noreferrer">
+        <span class="tag">Your course key</span>
+        <h3>Same key as last week</h3>
+        <p>The notebook uses the OpenRouter key beginning with <code>sk-or-</code>, saved as a Colab secret named <code>OPENROUTER_API_KEY</code>. A full run of the notebook costs about one cent.</p>
+        <span class="go">Open fund.som.chat/account/tokens →</span>
+      </a>
+    </section>
+    <p class="caption" style="margin-top:14px">Prefer Jupyter or VS Code? <a href="tiny-agent.ipynb" download>Download the notebook</a> and set <code>OPENROUTER_API_KEY</code> as an environment variable.</p>
+
+    <section class="split" aria-labelledby="watch">
+      <div>
+        <p class="eyebrow">What to watch for</p>
+        <h2 id="watch">Four things the notebook lets you see for yourself.</h2>
+      </div>
+      <div class="copy">
+        <ol>
+          <li><strong>The model does not wait.</strong> Asked to request one tool and stop, it often carries on and writes a result it could not know. The program has to cut the reply short.</li>
+          <li><strong>The model chooses, the program carries out.</strong> Nobody tells the agent which file to open. When you play the program by hand, you make no decisions at all.</li>
+          <li><strong>A finished run is not a correct one.</strong> The loop stops when a line starts with <code>ANSWER</code>. A small model can produce that line with nonsense after it.</li>
+          <li><strong>Anything the agent reads can try to instruct it.</strong> A note in a file reaches the model the same way your question does. Some models obey it, some ignore it silently, and some tell you.</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="section-heading">
+      <p class="eyebrow">Part B · optional · about 10 minutes</p>
+      <h2>The same task in a real agent</h2>
+      <p>The last cells of the notebook install an open-source agent on the temporary Colab machine, give it the same folder and question, and print its record in the same style as yours.</p>
+    </div>
+    <section class="cards" aria-label="Part B materials">
+      <a class="card cool featured" href="https://github.com/earendil-works/pi" target="_blank" rel="noopener noreferrer">
+        <span class="tag">The agent · open source</span>
+        <h3>pi</h3>
+        <p>A small agent that people use for programming. It has four tools by default: read a file, write a file, edit a file, and run any command. In the notebook we give it only two tools that look. Compare how many calls it takes, how much it reads on the first call, and where its count of days comes from.</p>
+        <span class="go">Open the repository →</span>
+      </a>
+    </section>
+    <aside class="notice">
+      <strong>Run pi in Colab, not on your laptop.</strong>
+      pi has no permission system. On a computer it can do whatever the person who started it could do, without asking. That is a deliberate design choice by its authors, and it suits people who run it inside a sealed-off environment. The Colab machine is deleted when you close the notebook, which makes it a safe place to try.
+    </aside>
+
+    <div class="section-heading">
+      <p class="eyebrow">Part C · on your own computer</p>
+      <h2>Codex, on a folder of your own</h2>
+      <p>You have used Codex already. This time, watch how it works as well as what it produces.</p>
+    </div>
+    <section class="split" aria-labelledby="codex">
+      <div>
+        <p class="eyebrow">Steps</p>
+        <h2 id="codex">Give it one small job, then read its record.</h2>
+      </div>
+      <div class="copy">
+        <ol>
+          <li><strong>Make a practice folder</strong> holding copies of three or four documents. Do not point an agent at a folder you cannot afford to have changed.</li>
+          <li><strong>Give Codex one job</strong> in that folder. For example: read these documents and write a one-page comparison as a new file.</li>
+          <li><strong>Find the four parts.</strong> Which model is it using? Which tools does it use? Where is its memory: is there an <code>AGENTS.md</code> file, and what does the session show? What are its limits: what is the approval setting, and what happens when it wants to step outside the folder?</li>
+          <li><strong>Note every question it asks you</strong>, and what it did without asking.</li>
+          <li><strong>Read the record</strong> with four questions. What did it read? What did it change? What is the result based on? How did it stop?</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="bring">
+      <div>
+        <p class="eyebrow">What to bring back</p>
+        <h2 id="bring">Two records and one sentence.</h2>
+      </div>
+      <div class="copy">
+        <p>From any part of the lab, keep <strong>one record that went well</strong> and <strong>one that went wrong</strong>. A short excerpt is enough. Add a sentence on what made the difference.</p>
+        <p>The notebook has eleven checkpoints. Answer them briefly in your lab log as you go.</p>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="why">
+      <div>
+        <p class="eyebrow">Why this is in a policy course</p>
+        <h2 id="why">Three questions you can ask without seeing any code.</h2>
+      </div>
+      <div class="copy">
+        <p><strong>What can it touch?</strong> Which tools does the system have? Do they only look, or can they change things? On whose accounts and files?</p>
+        <p><strong>Who says yes?</strong> Which actions wait for a person, and which do not? Who is that person, and what are they shown before they agree?</p>
+        <p><strong>What record does it leave?</strong> Afterwards, can someone work out what it read, what it did, and why it stopped? Who keeps that record?</p>
+        <p>These are the tools, the limits and the memory of today's tiny agent, asked from the outside. They apply the same way to a coding assistant, a customer-service system, or a proposal to automate casework in a ministry.</p>
+      </div>
+    </section>
+
+    <footer>
+      <span>GLBL 5053 · Fall 2026 · CC BY 4.0</span>
+      <span>Drafted by Claude (Anthropic), based on the direction of Xiuye Chen.</span>
+    </footer>
+  </main>
+</body>
+</html>

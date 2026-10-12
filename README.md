@@ -4,6 +4,7 @@ Student-facing workshop pages and notebooks for GLBL 5053: Applied AI for Global
 
 ## Pages
 
+- [Week 6: A tiny agent](week-06/): what an agent is, a notebook that builds one in six steps, and the same task in an open-source agent
 - [Week 5: Calling models directly](week-05/): API introduction, the model-comparison notebook, and Karpathy's GPT materials
 - [A map of the model list](week-05/models.html): how to read the OpenRouter catalog
 
@@ -15,7 +16,9 @@ python3 -m http.server 8000
 
 ## Sources
 
-The Week 5 API introduction and notebook are adapted from CPSC 1710 Lab 4 (`cpsc1710/labs`, `lab-04/`). The notebook's key setup, key check, and embedding section follow that lab; the model ladder and side-by-side experiments are new. Model names and prices on `week-05/models.html` were read from OpenRouter's public catalog on October 5, 2026.
+The Week 5 API introduction and notebook are adapted from CPSC 1710 Lab 4 (`cpsc1710/labs`, `lab-04/`). The notebook's key setup, key check, and embedding section follow that lab; the model ladder and side-by-side experiments are new. The Week 6 notebook reuses the Week 5 key setup; its tiny agent and the recorded run on the Week 6 page are new. The optional last part runs [pi](https://github.com/earendil-works/pi) (MIT license) inside Colab.
+
+Model names and prices on `week-05/models.html` were read from OpenRouter's public catalog on October 5, 2026.
 
 ## Credits
 
