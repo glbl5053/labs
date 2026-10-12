@@ -5,6 +5,7 @@ Student-facing workshop pages and notebooks for GLBL 5053: Applied AI for Global
 ## Pages
 
 - [Week 6: A tiny agent](week-06/): what an agent is, a notebook that builds one in six steps, and the same task in an open-source agent
+- [What is an AI agent?](week-06/what-is-an-agent.html): the Week 6 slides, as one self-contained file (arrow keys step through)
 - [Week 5: Calling models directly](week-05/): API introduction, the model-comparison notebook, and Karpathy's GPT materials
 - [A map of the model list](week-05/models.html): how to read the OpenRouter catalog
 
