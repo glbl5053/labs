@@ -4,6 +4,7 @@ Student-facing workshop pages and notebooks for GLBL 5053: Applied AI for Global
 
 ## Pages
 
+- [Week 10: Run a business for 30 days](week-10/): start an agent on Prosus Vending Bench, play the same business by hand, and read the agent's run; with the notebook and an Opus 5.5 journal of a full run
 - [Week 6: A tiny agent](week-06/): what an agent is, a notebook that builds one in six steps, and the same task in an open-source agent
 - [What is an AI agent?](week-06/what-is-an-agent.html): the Week 6 slides, as one self-contained file (arrow keys step through)
 - [What is an AI agent? (short)](week-06/what-is-an-agent-short.html): a 24-slide cut of the Week 6 slides
@@ -19,7 +20,7 @@ python3 -m http.server 8000
 
 ## Sources
 
-The Week 5 API introduction and notebook are adapted from CPSC 1710 Lab 4 (`cpsc1710/labs`, `lab-04/`). The notebook's key setup, key check, and embedding section follow that lab; the model ladder and side-by-side experiments are new. The Week 6 notebook reuses the Week 5 key setup; its tiny agent and the recorded run on the Week 6 page are new. The optional last part runs [pi](https://github.com/earendil-works/pi) (MIT license) inside Colab. The short Week 6 slides keep 24 of the full deck's 30 slides. The watermarking page is adapted from a CPSC 1710 Week 7 page; only the course labels and the opening paragraph changed. Its facts about Claude come from Anthropic's post [How Claude's text watermarking works](https://www.anthropic.com/news/claude-text-watermark) (August 14, 2026).
+The Week 5 API introduction and notebook are adapted from CPSC 1710 Lab 4 (`cpsc1710/labs`, `lab-04/`). The notebook's key setup, key check, and embedding section follow that lab; the model ladder and side-by-side experiments are new. The Week 6 notebook reuses the Week 5 key setup; its tiny agent and the recorded run on the Week 6 page are new. The optional last part runs [pi](https://github.com/earendil-works/pi) (MIT license) inside Colab. The short Week 6 slides keep 24 of the full deck's 30 slides. The watermarking page is adapted from a CPSC 1710 Week 7 page; only the course labels and the opening paragraph changed. Its facts about Claude come from Anthropic's post [How Claude's text watermarking works](https://www.anthropic.com/news/claude-text-watermark) (August 14, 2026). The Week 10 page, notebook and journal are adapted from CPSC 1710 Lab 8 (`cpsc1710/labs`, `lab-08/`); course labels, references to earlier weeks and the class-board steps changed, and the code is unchanged. The benchmark is [Prosus Vending Bench](https://github.com/ProsusAI/vending-bench) v3.0.0 (Apache 2.0).
 
 Model names and prices on `week-05/models.html` were read from OpenRouter's public catalog on October 5, 2026.
 
